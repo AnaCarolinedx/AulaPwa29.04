@@ -1,4 +1,4 @@
-const CACHE_NAME = "aula-pwa-v2";
+const CACHE_NAME = "AulaPwa29.04";
 const urlsToCache = [
   "./",
   "./index.html",
@@ -8,46 +8,51 @@ const urlsToCache = [
   "./icon-512.png"
 ];
 
-// Instalação e cache
-self.addEventListener("install", (event) => {
+self.addEventListener("install", event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(urlsToCache))
+    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
   );
+  self.skipWaiting(); // força o SW a ativar imediatamente
 });
 
-// Ativação: limpa caches antigos
-self.addEventListener("activate", (event) => {
+self.addEventListener("activate", event => {
   event.waitUntil(
-    caches.keys().then((cacheNames) =>
+    caches.keys().then(cacheNames =>
       Promise.all(
         cacheNames
-          .filter((name) => name !== CACHE_NAME)
-          .map((name) => caches.delete(name))
+          .filter(name => name !== CACHE_NAME)
+          .map(name => caches.delete(name))
       )
     )
   );
+  self.clients.claim();
 });
 
 // Intercepta requisições
-self.addEventListener("fetch", (event) => {
+self.addEventListener("fetch", event => {
   event.respondWith(
-    caches.match(event.request).then((response) => {
-      // Retorna do cache se existir
+    caches.match(event.request).then(response => {
       if (response) return response;
 
-      // Tenta buscar na rede
       return fetch(event.request)
-        .then((networkResponse) => {
-          // Opcional: adiciona ao cache dinâmico
-          return caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, networkResponse.clone());
+        .then(networkResponse => {
+          // Só cacheia respostas válidas
+          if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== "basic") {
             return networkResponse;
-          });
+          }
+
+          // Adiciona ao cache
+          const responseClone = networkResponse.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, responseClone));
+          return networkResponse;
         })
-        .catch((err) => {
-          console.warn("Falha no fetch para:", event.request.url);
-          // Retorna algo padrão offline
-          return caches.match("./index.html");
+        .catch(() => {
+          // Fallback offline: retorna index.html ou outro arquivo
+          if (event.request.mode === "navigate") {
+            return caches.match("./index.html");
+          }
+          // Para imagens ou outros arquivos: opcional, retorna vazio
+          return new Response("Offline", { status: 503, statusText: "Offline" });
         });
     })
   );
