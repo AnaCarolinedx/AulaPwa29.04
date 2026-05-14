@@ -2,6 +2,7 @@
   "name": "Minha Aula PWA",
   "short_name": "AulaPWA",
   "start_url": "./index.html",
+  "scope": "/AulaPwa29.04/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#007bff",
