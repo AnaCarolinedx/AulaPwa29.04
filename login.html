@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - Aula PWA</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="manifest" href="manifest.json">
+
+  <meta name="theme-color" content="#007bff">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="login-container">
+
+  <h2>Login</h2>
+
+  <input type="text" id="username" placeholder="Digite seu RM">
+
+  <input type="password" id="password" placeholder="Digite sua senha">
+
+  <button onclick="login()">Entrar</button>
+
+  <p class="error" id="errorMsg">
+    RM ou senha incorretos
+  </p>
+
+  <p class="success" id="successMsg">
+    Login realizado com sucesso!
+  </p>
+
+  <!-- BOTÃO VOLTAR -->
+  <a href="index.html">
+    <button type="button" class="voltar-btn">
+      Voltar para Início
+    </button>
+  </a>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>

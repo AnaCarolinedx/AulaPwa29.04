@@ -2,34 +2,25 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Login - Aula PWA</title>
+  <title>Home - Aula PWA</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <base href="/AulaPwa29.04/">
+  <a href="login.html">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#007bff">
-  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="login-container">
-  <h2>Login</h2>
-  <input type="text" id="username" placeholder="Usuário">
-  <input type="password" id="password" placeholder="Senha">
-  <button onclick="login()">Entrar</button>
+  <h1>Bem-vindo ao PWA</h1>
 
-  <p class="error" id="errorMsg">Usuário ou senha incorretos</p>
-  <p class="success" id="successMsg">Login realizado com sucesso!</p>
+  <p>Sistema de Login da Aula</p>
+
+<a href="./login.html">
+   <button>Ir para Login</button>
+  </a>
 </div>
 
-<!-- Botão de instalação -->
-<button id="installBtn" style="display:none; position: fixed; bottom: 20px; right: 20px; padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">
-  Instalar App
-</button>
-
-<script src="script.js"></script>
-
-<!-- Registro do Service Worker -->
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
@@ -38,25 +29,6 @@ if ('serviceWorker' in navigator) {
       .catch(err => console.log('Falha ao registrar SW:', err));
   });
 }
-
-// Evento para instalar PWA
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-
-  const installBtn = document.getElementById('installBtn');
-  installBtn.style.display = 'block';
-
-  installBtn.addEventListener('click', () => {
-    installBtn.style.display = 'none';
-    deferredPrompt.prompt();
-    deferredPrompt.userChoice.then((choiceResult) => {
-      console.log('Resultado da instalação:', choiceResult.outcome);
-      deferredPrompt = null;
-    });
-  });
-});
 </script>
 
 </body>
